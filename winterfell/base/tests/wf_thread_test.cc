@@ -14,11 +14,17 @@ using winterfell::Thread;
 using winterfell::GetThreadId;
 using std::cout;
 using std::endl;
+
+/**
+ * 测试并发打印日志 =*
+ */
 void thread1() {
-  cout << "=====线程1=====" << endl;
+  for(int i = 0; i < 100000; i++) 
+    LOG_INFO << "=";
 }
 void thread2() {
-  cout << "=====线程2=====" << endl;
+  for (int i = 0; i < 100000; i++)
+    LOG_INFO << "*";
 }
 int main() {
   winterfell::g_logger.GetInstance()->setLogLevel(winterfell::Logger::DEBUG);

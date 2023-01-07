@@ -3,3 +3,6 @@ target_link_libraries(wf_log_test winterfell_base winterfell_util)
 
 add_executable(wf_thread_test wf_thread_test.cc)
 target_link_libraries(wf_thread_test winterfell_base winterfell_util)
+
+add_executable(wf_timestamp_test wf_timestamp_test.cc)
+target_link_libraries(wf_timestamp_test winterfell_base winterfell_util)

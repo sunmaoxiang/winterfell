@@ -1,6 +1,7 @@
 set(base_SRCS
   wf_log.cc
   wf_thread.cc
+  wf_timestamp.cc
 )
 
 add_library(winterfell_base ${base_SRCS})

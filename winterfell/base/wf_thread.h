@@ -45,7 +45,7 @@ public:
   /**
    * @brief 用于执行threadFunc
   */
-  void runInThread() { func_(); }
+  void runInThread();
 
   /**
    * @brief 一系列getter方法

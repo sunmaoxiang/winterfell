@@ -5,12 +5,15 @@
  */
 
 #include "wf_log.h"
+#include "winterfell/base/wf_timestamp.h"
 
 #include <iostream>
 
 #include <cstdlib> // abort
 #include <unordered_map>
 #include <string>
+#include <cstdio>
+
 
 using std::cout;
 using std::endl;
@@ -25,7 +28,8 @@ void setLoggerLevel(Logger::LoggerLevel level) {
 }
 
 const string &getLevelString(Logger::LoggerLevel level) {
-  static unordered_map<int, string> mm {
+  static unordered_map<int, string> mm{
+      {Logger::TRACE, "TRACE"},
       {Logger::DEBUG, "DEBUG"},
       {Logger::INFO, "INFO"},
       {Logger::WARN, "WARN"},
@@ -35,18 +39,20 @@ const string &getLevelString(Logger::LoggerLevel level) {
   return mm[level];
 }
 
-void Logger::log(const LoggerEvent &loggerEvent) {
-  // FIXME: 还没实现同步
-  cout << loggerEvent.fmt() << endl;
+LoggerEvent::LoggerEvent(Logger::LoggerLevel level, time_t t, uint32_t thread_id,
+                         const char *fileName, uint32_t lineno) {
+  std::stringstream ss;
+  ss << getLevelString(level) << " [" << Timestamp::now().toFormattedString() << "] " << thread_id << " " << "%s" << " - " << fileName << ":" << lineno;
+  logfmt_ = ss.str();
 }
 
-LoggerEvent::LoggerEvent(Logger::LoggerLevel level, time_t t, uint32_t thread_id,
-                     const string &msg, const char *fileName, uint32_t lineno) {
-  std::stringstream ss;
-  string dateString(asctime(gmtime(&t)));
-  dateString = dateString.substr(0, dateString.size() - 1);
-  ss << getLevelString(level) << " [" << dateString << "] " << thread_id << " " << msg << " - " << fileName << ":" << lineno;
-  logfmt_ = ss.str();
+LoggerWrapper::LoggerWrapper(Logger *logger, std::shared_ptr<LoggerEvent> loggerEvent) 
+: logger_(logger), loggerEvent_(loggerEvent) {
+}
+
+LoggerWrapper::~LoggerWrapper() {
+  ::printf(string(loggerEvent_->fmt() + string("\n")).c_str(), loggerEvent_->SS().str().c_str());
+  loggerEvent_->SS().clear();
 }
 
 } // namespace winterfell

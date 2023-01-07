@@ -4,6 +4,8 @@
  * @Description: 不可拷贝对象封装，继承之即可实现对象的noncopyable
  */
 
+#pragma once
+
 namespace winterfell {
 
 class Noncopyable

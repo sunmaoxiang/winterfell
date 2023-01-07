@@ -40,9 +40,9 @@ void Thread::start() {
   
   if(pthread_create(&pthreadId_, NULL, startThread, this)) {
     started_ = false;
-    LOG_FATAL("Failed in pthread_create");
+    LOG_FATAL << "Failed in pthread_create";
   } else {
-    LOG_DEBUG(string("线程启动, ID = ") + std::to_string(tid_));
+    LOG_TRACE << "线程启动, ID = " << GetThreadId();
   }
 }
 
@@ -50,8 +50,13 @@ int Thread::join() {
   assert(started_);
   assert(!joined_);
   joined_ = true;
-  LOG_DEBUG(string("回收线程, ID = ") + std::to_string(tid_));
+  LOG_TRACE << "回收线程, ID = " << tid_;
   return pthread_join(pthreadId_, NULL);
+}
+
+void Thread::runInThread() {
+  tid_ = GetThreadId();
+  func_(); 
 }
 
 };
