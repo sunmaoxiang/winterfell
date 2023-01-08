@@ -45,34 +45,30 @@ public:
   time_t secondsSinceEpoch() const{
     return static_cast<time_t>(microSecondsSinceEpoch_ / kMicroSecondsPerSecond);
   }
-  
+  bool invalid() { return microSecondsSinceEpoch_ < 0; }
+
   /**
    * @brief 获取当前时间，设置成静态函数是为了Timestamp::func()直接调用
   */
   static Timestamp now(); 
-  static Timestamp invalid() { return Timestamp(); }
+  
+  static Timestamp fromUnixTime(time_t t, int microseconds) {
+    return Timestamp(static_cast<int64_t>(t) * kMicroSecondsPerSecond + microseconds);
+  }
 
   static Timestamp fromUnixTime(time_t t) {
     return fromUnixTime(t, 0);
   }
 
-  static Timestamp fromUnixTime(time_t t, int microseconds) {
-    return Timestamp(static_cast<int64_t>(t) * kMicroSecondsPerSecond + microseconds);
+  bool operator < (const Timestamp& rhs) {
+    return this->microSecondsSinceEpoch() < rhs.microSecondsSinceEpoch();
+  }
+  bool operator==(const Timestamp &rhs) {
+    return this->microSecondsSinceEpoch() == rhs.microSecondsSinceEpoch();
   }
 
 private:
   int64_t microSecondsSinceEpoch_;
   static const int kMicroSecondsPerSecond = 1000 * 1000; // 微秒转化成秒需要乘多少
 };
-
-inline bool operator<(Timestamp lhs, Timestamp rhs)
-{
-  return lhs.microSecondsSinceEpoch() < rhs.microSecondsSinceEpoch();
-}
-
-inline bool operator==(Timestamp lhs, Timestamp rhs)
-{
-  return lhs.microSecondsSinceEpoch() == rhs.microSecondsSinceEpoch();
-}
-
 };

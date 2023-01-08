@@ -1,0 +1,5 @@
+add_executable(wf_event_loop_test1 wf_event_loop_test1.cc)
+target_link_libraries(wf_event_loop_test1 winterfell_net winterfell_base winterfell_util)
+
+add_executable(wf_event_loop_test2 wf_event_loop_test2.cc)
+target_link_libraries(wf_event_loop_test2 winterfell_net winterfell_base winterfell_util)
