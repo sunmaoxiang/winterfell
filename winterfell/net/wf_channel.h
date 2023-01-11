@@ -6,8 +6,7 @@
 #pragma once
 
 #include "winterfell/util/wf_noncopyable.h"
-
-#include <functional>
+#include "winterfell/util/wf_callbacks.h"
 
 namespace winterfell {
 
@@ -15,7 +14,6 @@ class EventLoop;
 
 class Channel : Noncopyable {
 public:
-  typedef std::function<void()> EventCallback; // 回调函数类型
 
   /**
    * @brief: 构造函数

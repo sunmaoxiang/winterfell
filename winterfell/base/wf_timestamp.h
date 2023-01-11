@@ -13,6 +13,9 @@ namespace winterfell {
 using std::string;
 
 class Timestamp {
+
+friend inline Timestamp addTime(Timestamp timestamp, int64_t seconds);
+
 public:
   Timestamp()
     : microSecondsSinceEpoch_(0)
@@ -60,10 +63,10 @@ public:
     return fromUnixTime(t, 0);
   }
 
-  bool operator < (const Timestamp& rhs) {
+  bool operator < (const Timestamp& rhs) const {
     return this->microSecondsSinceEpoch() < rhs.microSecondsSinceEpoch();
   }
-  bool operator==(const Timestamp &rhs) {
+  bool operator==(const Timestamp &rhs) const {
     return this->microSecondsSinceEpoch() == rhs.microSecondsSinceEpoch();
   }
 
@@ -71,4 +74,9 @@ private:
   int64_t microSecondsSinceEpoch_;
   static const int kMicroSecondsPerSecond = 1000 * 1000; // 微秒转化成秒需要乘多少
 };
+inline Timestamp addTime(Timestamp timestamp, int64_t seconds)
+{
+  int64_t delta = static_cast<int64_t>(seconds * Timestamp::kMicroSecondsPerSecond);
+  return Timestamp(timestamp.microSecondsSinceEpoch() + delta);
+}
 };

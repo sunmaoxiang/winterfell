@@ -7,6 +7,7 @@
 
 #include "winterfell/util/wf_noncopyable.h"
 #include "winterfell/util/wf_util.h"
+#include "winterfell/util/wf_callbacks.h"
 
 
 #include <pthread.h>
@@ -17,6 +18,8 @@ namespace winterfell {
 
 class Channel;
 class Poller;
+class Timestamp;
+class TimerQueue;
 
 class EventLoop : Noncopyable {
 public:
@@ -47,10 +50,25 @@ public:
   */
   void quit();
 
+
   /**
    * @brief 添加 or 修改 loop中监听的IO事件
   */
   void updateChannel(Channel* channel);
+
+  /**
+   * @brief runAt: 在指定事件启动事件
+  */
+  void runAt(Timestamp at, TimerCallback tcb);
+  /**
+   * @brief runAfter: 在 delta seconds 之后执行某个事件
+  */
+  void runAfter(int64_t delta, TimerCallback tcb);
+  /**
+   * @brief runEvery: 每到interval间隔事件后执行某个事件
+  */
+  void runEvery(int64_t interval, TimerCallback tcb);
+
 private:
   void abortNotInLoopThread();
   bool looping_;
@@ -59,6 +77,7 @@ private:
   bool quit_;
   ChannelList activeChannels_;
   std::unique_ptr<Poller> poller_; // 一个event_loop独占一个poller
+  std::unique_ptr<TimerQueue> timerQueue_; // 一个event_loop独占一个定时器队列
   const static int kPollTimeMs = 5 * 1000;
 };
 

@@ -2,6 +2,8 @@ set(net_SRCS
   wf_event_loop.cc
   wf_channel.cc
   wf_poller.cc
+  wf_timer.cc
+  wf_timer_queue.cc
   poller/wf_poll_poller.cc
   poller/wf_epoll_poller.cc
 )

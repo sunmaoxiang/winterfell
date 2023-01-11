@@ -9,6 +9,9 @@
 #include "winterfell/net/wf_poller.h"
 #include "winterfell/net/poller/wf_default_poller.h"
 #include "winterfell/net/wf_channel.h"
+#include "winterfell/net/wf_timer.h"
+#include "winterfell/net/wf_timer_queue.h"
+
 #include <assert.h>
 #include <memory>
 
@@ -20,8 +23,8 @@ __thread EventLoop *t_loopInThisThread = 0;
 
 EventLoop::EventLoop()
   : looping_(false),
-    threadId_(GetThreadId()) {
-  LOG_TRACE << "EventLoop create " << this << " in thread " << threadId_;
+    threadId_(GetThreadId()){
+    LOG_TRACE << "EventLoop create " << this << " in thread " << threadId_;
 
   // 确保 one loop per thread
   if (t_loopInThisThread) {
@@ -30,6 +33,7 @@ EventLoop::EventLoop()
   else {
     t_loopInThisThread = this;
     poller_.reset( DefaultPoller(t_loopInThisThread) );
+    timerQueue_ = std::unique_ptr<TimerQueue>(new TimerQueue(this));
   }  
 }
 
@@ -73,6 +77,18 @@ void EventLoop::updateChannel(Channel* channel) {
   assert(channel->ownerLoop() == this);
   assertInLoopThread();
   poller_->updateChannel(channel);
+}
+
+void EventLoop::runAt(Timestamp at, TimerCallback tcb) {
+  timerQueue_->addTimer(new Timer(at, 0, tcb));
+}
+void EventLoop::runAfter(int64_t delta, TimerCallback tcb) {
+  auto at = addTime(Timestamp::now(), delta); 
+  timerQueue_->addTimer(new Timer(at, 0, tcb ));
+}
+void EventLoop::runEvery(int64_t interval, TimerCallback tcb) {
+  auto at = addTime(Timestamp::now(), interval);
+  timerQueue_->addTimer(new Timer(at, interval, tcb));
 }
 
 };
