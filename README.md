@@ -29,5 +29,8 @@
 2. Channel 与 EventLoop是N对1的关系，Channel提供接口来更新所在EventLoop中该Channel的状态。
 3. EventLoop独占Poller，并可以更新Channel的行为。
 
+## 2023年1月11日： 实现定时器功能
+
+1. EventLoop中提供runAt,runAfter,runEvery接口，EventLoop独占一个timerQueue用来管理所有Timer，当注册到poller中的timefd倒计时结束会回调timerQueueCallBack，在timerQueue维护的multiset中找到所有到期的Timer，先删掉，然后运行这些timer中回调函数，回调完成后判断是否需要重新添加，从而对应runEvery功能。
 
 
