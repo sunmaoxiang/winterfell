@@ -6,6 +6,10 @@ set(net_SRCS
   wf_timer_queue.cc
   poller/wf_poll_poller.cc
   poller/wf_epoll_poller.cc
+  wf_endpoint.cc
+  wf_acceptor.cc
+  wf_sockets_ops.cc
+  wf_socket.cc
 )
 
 add_library(winterfell_net ${net_SRCS})

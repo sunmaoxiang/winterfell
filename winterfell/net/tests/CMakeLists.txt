@@ -6,3 +6,10 @@ target_link_libraries(wf_event_loop_test2 winterfell_net winterfell_base winterf
 
 add_executable(wf_timer_queue_test wf_timer_queue_test.cc)
 target_link_libraries(wf_timer_queue_test winterfell_net winterfell_base winterfell_util)
+
+add_executable(wf_endpoint_test wf_endpoint_test.cc)
+target_link_libraries(wf_endpoint_test winterfell_net winterfell_base winterfell_util)
+
+
+add_executable(wf_acceptor_test wf_acceptor_test.cc)
+target_link_libraries(wf_acceptor_test winterfell_net winterfell_base winterfell_util)
