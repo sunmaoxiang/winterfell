@@ -10,6 +10,7 @@
 
 #include <sys/socket.h>
 #include <unistd.h>
+#include <cstring>
 #include <netinet/in.h>
 #include <errno.h>
 
@@ -37,6 +38,8 @@ void sockets::bind(int sockfd, const struct sockaddr_in* addr) {
     LOG_FATAL << "sockets::bind";
   }
 }
+
+
 void sockets::listen(int sockfd, int backlog) {
   int ret = ::listen(sockfd, backlog);
   if (ret < 0) {
@@ -81,6 +84,17 @@ void sockets::setReuseAddr(int sockfd, bool on)
 
 void sockets::close(int fd) {
   ::close(fd);
+}
+
+struct sockaddr_in sockets::getLocalAddr(int sockfd) {
+  struct sockaddr_in localaddr;
+  memset(&localaddr,0, sizeof localaddr);
+  socklen_t addrlen = static_cast<socklen_t>(sizeof localaddr);
+  if (::getsockname(sockfd, reinterpret_cast<struct sockaddr*>(&localaddr), &addrlen) < 0)
+  {
+    LOG_ERROR << "sockets::getLocalAddr";
+  }
+  return localaddr;
 }
 
 }

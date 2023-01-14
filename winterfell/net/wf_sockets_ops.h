@@ -50,6 +50,10 @@ void setTcpNodelay(int sockfd, bool on);
 */
 void close(int fd);
 
+/**
+ * @brief 获取绑定在某个sockfd上的地址
+*/
+struct sockaddr_in getLocalAddr(int sockfd);
 }
 
 }

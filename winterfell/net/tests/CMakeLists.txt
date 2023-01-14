@@ -13,3 +13,6 @@ target_link_libraries(wf_endpoint_test winterfell_net winterfell_base winterfell
 
 add_executable(wf_acceptor_test wf_acceptor_test.cc)
 target_link_libraries(wf_acceptor_test winterfell_net winterfell_base winterfell_util)
+
+add_executable(wf_tcp_server_test wf_tcp_server_test.cc)
+target_link_libraries(wf_tcp_server_test winterfell_net winterfell_base winterfell_util)
