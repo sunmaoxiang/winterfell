@@ -86,6 +86,11 @@ public:
   const string &fmt() const { return logfmt_;}
   
   /**
+   * @brief 获取log具体的level
+  */
+  Logger::LoggerLevel getLevel() const { return level_ ;}
+
+  /**
    * @brief: 获取LogEvent中保存的日志输入流
    * @return stringstream& 
    */  
@@ -94,6 +99,7 @@ public:
 private:
   string logfmt_;
   stringstream ss_;
+  Logger::LoggerLevel level_;
 };
 
 /**

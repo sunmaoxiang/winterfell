@@ -40,7 +40,8 @@ const string &getLevelString(Logger::LoggerLevel level) {
 }
 
 LoggerEvent::LoggerEvent(Logger::LoggerLevel level, time_t t, uint32_t thread_id,
-                         const char *fileName, uint32_t lineno) {
+                         const char *fileName, uint32_t lineno)
+: level_(level) {
   std::stringstream ss;
   ss << getLevelString(level) << " [" << Timestamp::now().toFormattedString() << "] " << thread_id << " " << "%s" << " - " << fileName << ":" << lineno;
   logfmt_ = ss.str();
@@ -53,6 +54,9 @@ LoggerWrapper::LoggerWrapper(Logger *logger, std::shared_ptr<LoggerEvent> logger
 LoggerWrapper::~LoggerWrapper() {
   ::printf(string(loggerEvent_->fmt() + string("\n")).c_str(), loggerEvent_->SS().str().c_str());
   loggerEvent_->SS().clear();
+  if (loggerEvent_->getLevel() == Logger::FATAL) {
+    abort();
+  } 
 }
 
 } // namespace winterfell
