@@ -38,6 +38,7 @@ public:
   void timerQueueCallBack();
 
 private:
+  void addTimerInLoop(Timer* timer);
   /**
    * @brief: 
    * @param [expirationBegin, expirationEnd) 为TimerHeap中所有过期的Timer

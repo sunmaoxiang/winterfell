@@ -45,6 +45,10 @@ TimerQueue::~TimerQueue()
 
 void TimerQueue::addTimer(Timer* timer)
 {
+  loop_->runInLoop(std::bind(&TimerQueue::addTimerInLoop, this, timer)); 
+}
+
+void TimerQueue::addTimerInLoop(Timer *timer) {
   struct itimerspec howlong;
   memset(&howlong, 0, sizeof howlong);
   howlong.it_value.tv_sec = timer->when().secondsSinceEpoch() - Timestamp::now().secondsSinceEpoch();
