@@ -45,8 +45,7 @@ void TcpServer::start() {
     started_ = true;
   } 
   if (!acceptor_->listening()) {
-    // FIXME：
-    acceptor_->listen();
+    loop_->runInLoop(std::bind(&Acceptor::listen, this->acceptor_.get()));
   }
 }
 

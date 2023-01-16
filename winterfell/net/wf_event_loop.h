@@ -8,6 +8,7 @@
 #include "winterfell/util/wf_noncopyable.h"
 #include "winterfell/util/wf_util.h"
 #include "winterfell/util/wf_callbacks.h"
+#include "winterfell/base/wf_mutex.h"
 
 
 #include <pthread.h>
@@ -69,6 +70,12 @@ public:
   */
   void runEvery(int64_t interval, TimerCallback tcb);
 
+  /**
+   * @brief 在本线程内执行某个用户的任务回调，当是本线程调用时是同步执行（原因是单线程无锁），当是别的线程调用需要加入任务队列中，在唤醒poller后调用
+  */
+  void runInLoop(const Functor& cb);
+  void queueInLoop(const Functor& cb);
+
 private:
   void abortNotInLoopThread();
   bool looping_;
@@ -79,6 +86,16 @@ private:
   std::unique_ptr<Poller> poller_; // 一个event_loop独占一个poller
   std::unique_ptr<TimerQueue> timerQueue_; // 一个event_loop独占一个定时器队列
   const static int kPollTimeMs = 5 * 1000;
+
+  std::vector<Functor> pendingFunctors_;  // @GuardeBy mutex_
+  MutexLock mutex_;
+  bool callingPendingFunctors_;
+  int eventFd;
+  std::unique_ptr<Channel> wakeupChannle_; // 用于监听有事件到来，需要执行pendingFunctors_中的回调函数
+  void handleRead();
+  void doPendingFunctors();
+  void wakeup();
+  int createEventFd();
 };
 
 }

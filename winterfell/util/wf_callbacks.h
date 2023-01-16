@@ -38,4 +38,9 @@ typedef std::function<void (const TcpConnectionPtr& conn)> ConnectionCallback;
  * @brief 用于有新msg到来后进行回调
 */
 typedef std::function<void (const TcpConnectionPtr& conn)> MessageCallback; 
+
+/**
+ * @brief 用于EventLoop::runInLoop
+*/
+typedef std::function<void()> Functor;
 }
