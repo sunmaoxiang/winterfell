@@ -26,15 +26,15 @@ void onMessage(const TcpConnectionPtr& conn) {
   cout << "recv size: " << conn->getBufSize() << endl;;
 }
 
-
 int main() {
-  LOG_INFO << "main(): pid = %d\n" << ::getpid();
+  LOG_INFO << "main(): pid = " << ::getpid();
   Endpoint listenEndpoint("192.168.158.12", 9981);
   EventLoop loop;
 
   TcpServer server(&loop, listenEndpoint);
   server.setConnectionCallback(onConnection);
   server.setMessageCallback(onMessage);
+
   server.start();
   loop.loop();
   return 0;

@@ -40,6 +40,11 @@ typedef std::function<void (const TcpConnectionPtr& conn)> ConnectionCallback;
 typedef std::function<void (const TcpConnectionPtr& conn)> MessageCallback; 
 
 /**
+ * @brief 用于client断开连接后进行回调
+*/
+typedef std::function<void (const TcpConnectionPtr& conn)> CloseCallback;
+
+/**
  * @brief 用于EventLoop::runInLoop
 */
 typedef std::function<void()> Functor;

@@ -22,7 +22,7 @@ public:
    * @return {*}
    */  
   Channel(EventLoop* loop, int fd);
-  
+  ~Channel(); 
   /**
    * @brief handleEvent()是Channel的核心，它由EventLoop::loop()调用，根据revents_值分别调用不同的回调函数
   */
@@ -34,6 +34,7 @@ public:
   void setReadCallback(const EventCallback& cb) { readCallback_ = cb; }
   void setWriteCallback(const EventCallback& cb) { writeCallback_ = cb; }
   void setErrorCallback(const EventCallback& cb) { errorCallback_ = cb; }
+  void setCloseCallback(const EventCallback& cb) { closeCallback_ = cb; }
   
   /**
    * @brief 返回channel管理的fd
@@ -49,7 +50,8 @@ public:
    * 设置需要监听的IO事件
   */
   void enableReading() { events_ |= kReadEvent; update(); }
-
+  void disableAll() { events_ |= kNoneEvent; update(); }
+  
   /**
    * @brief 设置已经返回的事件mask
   */
@@ -87,11 +89,14 @@ public:
     EventCallback readCallback_;
     EventCallback writeCallback_;
     EventCallback errorCallback_;
+    EventCallback closeCallback_;
 
     const int fd_; // 构造函数成员列表初始化
     int events_;   // 关心的IO事件
     int revents_;  // 目前活动的事件，由poller设置
     int index_;    
+
+    bool eventHandling_;
 };
 
 };

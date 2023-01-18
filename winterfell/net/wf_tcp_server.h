@@ -30,27 +30,31 @@ TcpServer(EventLoop* loop, const Endpoint& listenEndpoint, std::string name = "t
 void start();
 
 /**
- * @brief 设置TcpServer创建一个新连接会回调的函数
+ * @brief 设置TcpServer创建一个新连接会调用的回调函数
 */
 void setConnectionCallback(const ConnectionCallback& cb) { connectionCallback_ = cb; }
 
 /**
- * @brief 设置TcpServer收到一个消息会回调的函数
+ * @brief 设置TcpServer收到一个消息会调用的回调函数
 */
 void setMessageCallback(const MessageCallback& cb) { messageCallback_ = cb; }
+
+
+
 
 private:
 
 void newConnectionCallback(Socket sock, const Endpoint& peerEndpoint);
-
+void removeConnection(const TcpConnectionPtr& conn);
 
 const std::string name_;
 EventLoop* loop_;
 std::unique_ptr<Acceptor> acceptor_;
+
 ConnectionCallback connectionCallback_;
 MessageCallback messageCallback_;
-bool started_;
 
+bool started_;
 int nextConnId_; // 递增用于标识唯一的Connection
 
 typedef std::map<std::string, TcpConnectionPtr> ConnectionMap; // 保存目前存活的TcpConnection的shared_ptr;

@@ -150,5 +150,10 @@ int EventLoop::createEventFd() {
   }
   return evtfd;
 }
+
+void EventLoop::removeChannel(Channel *ch) {
+  assertInLoopThread();
+  poller_->removeChannel(ch);
+}
 }
 

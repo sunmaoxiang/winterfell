@@ -38,6 +38,7 @@ void TcpServer::newConnectionCallback(Socket sock, const Endpoint& peerEndpoint)
   connections_[connName] = conn;
   conn->setConnectionCallback(connectionCallback_);
   conn->setMessageCallback(messageCallback_);
+  conn->setCloseCallback(std::bind(&TcpServer::removeConnection, this, _1));
   conn->connectEstablished();
 }
 void TcpServer::start() {
@@ -53,4 +54,12 @@ TcpServer::~TcpServer() {
   connections_.clear();
 }
 
+void TcpServer::removeConnection(const TcpConnectionPtr &conn) {
+  loop_->assertInLoopThread();
+  LOG_INFO << "TcpServer::removeConnection [" << name_ 
+           << "] - connection " << conn->name();
+  size_t n = connections_.erase(conn->name());
+  assert(n == 1);
+  loop_->queueInLoop(std::bind(&TcpConnection::connectDestroyed, conn)); 
+}
 }

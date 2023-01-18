@@ -20,7 +20,8 @@ Channel::Channel(EventLoop* loop, int fdArg)
     fd_(fdArg),
     events_(0),
     revents_(0),
-    index_(-1) {
+    index_(-1),
+    eventHandling_(false) {
 }
 
 
@@ -28,10 +29,22 @@ void Channel::update() {
   loop_->updateChannel(this);
 }
 
+Channel::~Channel() {
+  assert(!eventHandling_);
+}
+
 void Channel::handleEvent() {
+  eventHandling_ = true;
   // POLLNVAL Invalid request: fd not open (output only).
   if (revents_ & POLLNVAL) {
     LOG_WARN << "Channel::handleEvent() POLLINVAL: fd not open";
+  }
+  /**
+   * POLLHUP: Stream  socket  peer  closed  connection, or shut down writing half of connection.
+   */
+  if ((revents_ & POLLHUP) && !(events_ & POLLIN)) {
+    LOG_WARN << "CHannel::handle_event() POLLHUP";
+    if (closeCallback_) closeCallback_();
   }
   // POLLERR: Error condition
   if (revents_ & (POLLERR | POLLNVAL)) {
@@ -49,6 +62,7 @@ void Channel::handleEvent() {
   if (revents_ & POLLOUT) {
     if (writeCallback_) writeCallback_();
   }
+  eventHandling_ = false;
 }
 
 };

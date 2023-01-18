@@ -76,6 +76,11 @@ public:
   void runInLoop(const Functor& cb);
   void queueInLoop(const Functor& cb);
 
+  /**
+   * @brief 从eventLoop中删除相关channel
+  */
+  void removeChannel(Channel* ch);
+
 private:
   void abortNotInLoopThread();
   bool looping_;
