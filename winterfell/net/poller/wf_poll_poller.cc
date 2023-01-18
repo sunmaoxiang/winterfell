@@ -89,7 +89,12 @@ void PollPoller::removeChannel(Channel* channel) {
     assert(channels_[channel->fd()] == channel);
     channels_.erase(channel->fd()); // 从 map<fd, Channel*>中移除指定channel
     int idx = channel->index();
-    pollfds_.erase(pollfds_.begin() + idx);
+    // pollfds_.erase(pollfds_.begin() + idx); O(N)
+    /* we need O(1) */
+    int channelAtEnd = pollfds_.back().fd;
+    std::iter_swap(pollfds_.begin() + idx, pollfds_.end() - 1);
+    channels_[channelAtEnd]->set_index(idx);
+    pollfds_.pop_back();
   }
 }
 }; // namespace 
