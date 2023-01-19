@@ -92,8 +92,10 @@ void PollPoller::removeChannel(Channel* channel) {
     // pollfds_.erase(pollfds_.begin() + idx); O(N)
     /* we need O(1) */
     int channelAtEnd = pollfds_.back().fd;
-    std::iter_swap(pollfds_.begin() + idx, pollfds_.end() - 1);
-    channels_[channelAtEnd]->set_index(idx);
+    if (channel->fd() != channelAtEnd) {
+      channels_[channelAtEnd]->set_index(idx);
+      std::iter_swap(pollfds_.begin() + idx, pollfds_.end() - 1);
+    }
     pollfds_.pop_back();
   }
 }
