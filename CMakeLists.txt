@@ -1,10 +1,11 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.6)
+
 
 project(winterfell C CXX)
 
 add_compile_options(
  -g
- -std=c++11
+ -std=c++14
  # -DVALGRIND
  -DCHECK_PTHREAD_RETURN_VALUE
  -D_FILE_OFFSET_BITS=64
@@ -22,7 +23,6 @@ add_compile_options(
  # -MMD
  -rdynamic
 )
-
 
 
 include_directories(${PROJECT_SOURCE_DIR}) # include 默认路径
