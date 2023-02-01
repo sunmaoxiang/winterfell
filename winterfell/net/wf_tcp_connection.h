@@ -9,6 +9,7 @@
 #include "winterfell/net/wf_endpoint.h"
 #include "winterfell/net/wf_channel.h"
 #include "winterfell/util/wf_callbacks.h"
+#include "winterfell/net/wf_buffer.h"
 #include <memory>
 #include <string>
 
@@ -29,16 +30,27 @@ public:
 
   const string& name() const { return name_; }
   const Endpoint& peerEndpoint() const { return peerEndpoint_;}
-  // FIXME: use buf class
-  const char* getBuf() const { return buf; }
-  int getBufSize() const {return static_cast<int>(bufsize);}
+  
+  /**
+   * @brief 用于发送数据
+  */
+  void send(const std::string& message);
+  /**
+   * @brief 用于关闭服务端的写，连接状态变为kDisConnecting
+  */
+  void shutdown();
+
+
 private:
-  enum StateE { kConnnecting, kConnected, kDisconnected, }; // 定义状态
+  enum StateE { kConnnecting, kConnected, kDisconnecting, kDisconnected, }; // 定义状态
   void setState(StateE s) { state_ = s; }
   void handleRead(); // 当有消息到来时调用
   void handleWrite();
   void handleClose();
   void handleError();
+
+  void sendInLoop(const std::string& message);
+  void shutdownInLoop();
 
   EventLoop* loop_;
   std::string name_;
@@ -51,8 +63,7 @@ private:
   MessageCallback messageCallback_;
   CloseCallback closeCallback_;
 
-  // FIXME: use buffer class
-  char buf[65536];
-  ssize_t bufsize;
+  Buffer inputBuffer_; // 用于非阻塞read
+  Buffer outputBuffer_; // 用于非阻塞write
 };
 }

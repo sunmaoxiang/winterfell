@@ -50,7 +50,10 @@ public:
    * 设置需要监听的IO事件
   */
   void enableReading() { events_ |= kReadEvent; update(); }
+  void enableWriting() { events_ |= kWriteEvent; update(); }
+  void disableWriting() { events_ &= ~kWriteEvent; update(); }
   void disableAll() { events_ |= kNoneEvent; update(); }
+  bool isWriting() const { return events_ & kWriteEvent; }
   
   /**
    * @brief 设置已经返回的事件mask

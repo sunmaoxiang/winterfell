@@ -12,6 +12,7 @@ namespace winterfell {
 
 class Endpoint;
 class Socket;
+class Buffer;
 /**
  * @brief: 用于注册到Channel
  */  
@@ -37,7 +38,7 @@ typedef std::function<void (const TcpConnectionPtr& conn)> ConnectionCallback;
 /**
  * @brief 用于有新msg到来后进行回调
 */
-typedef std::function<void (const TcpConnectionPtr& conn)> MessageCallback; 
+typedef std::function<void (const TcpConnectionPtr& conn, Buffer& buf)> MessageCallback; 
 
 /**
  * @brief 用于client断开连接后进行回调

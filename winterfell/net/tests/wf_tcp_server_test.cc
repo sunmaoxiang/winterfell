@@ -21,9 +21,15 @@ void onConnection(const TcpConnectionPtr& conn) {
     LOG_INFO << "onConnection: connection [ " << conn->name() << "] is down" ;
   }
 }
-void onMessage(const TcpConnectionPtr& conn) {
-  cout << "recv msg: " << conn->getBuf();
-  cout << "recv size: " << conn->getBufSize() << endl;;
+void onMessage(const TcpConnectionPtr& conn, Buffer &buf) {
+  auto msg = buf.retrieveAsString();
+  cout << "recv msg: " << msg << endl;
+  cout << "recv size: " << msg.size() << endl;
+  if (msg == "\n") {
+    conn->shutdown();
+  } else {
+    conn->send("Hello word!!!");
+  }
 }
 
 int main() {
