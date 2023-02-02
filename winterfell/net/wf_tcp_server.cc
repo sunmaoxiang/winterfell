@@ -11,6 +11,7 @@
 #include "winterfell/net/wf_sockets_ops.h"
 #include "winterfell/net/wf_acceptor.h"
 #include "winterfell/net/wf_tcp_connection.h"
+#include "winterfell/net/wf_sub_loops.h"
 using namespace std::placeholders;
 
 namespace winterfell {
@@ -19,7 +20,8 @@ TcpServer::TcpServer(EventLoop* loop, const Endpoint& listenEndpoint, std::strin
 :name_(name),
 loop_(loop),
 acceptor_( std::unique_ptr<Acceptor>(new Acceptor(loop,listenEndpoint))),
-nextConnId_(1) {  
+nextConnId_(1),
+subLoops_(std::unique_ptr<SubLoops>(new SubLoops(loop))) {  
   acceptor_->setNewConnectionCallback(std::bind(&TcpServer::newConnectionCallback, this, _1, _2) );
 }
 
@@ -29,19 +31,21 @@ void TcpServer::newConnectionCallback(Socket sock, const Endpoint& peerEndpoint)
   snprintf(buf, sizeof buf, "#%d", nextConnId_);
   ++nextConnId_;
   std::string connName = name_ + buf; // TcpServer的名字 + # + connId
+  auto subLoop = subLoops_->getNextLoop();
   LOG_INFO << "TcpServer::newConnection [" << name_ << "] - new connection [" 
-           << connName << "] from " << peerEndpoint.getIpPort();
+           << connName << "] from " << peerEndpoint.getIpPort() << "turn over subLoop " << subLoops_->getId();
   Endpoint localEndpoint(sockets::getLocalAddr(sock.fd()));
   
   // 将新连接储存起来
-  TcpConnectionPtr conn(new TcpConnection(loop_, connName, std::move(sock), localEndpoint, peerEndpoint));
+  TcpConnectionPtr conn(new TcpConnection(subLoop.get(), connName, std::move(sock), localEndpoint, peerEndpoint));
   connections_[connName] = conn;
   conn->setConnectionCallback(connectionCallback_);
   conn->setMessageCallback(messageCallback_);
   conn->setCloseCallback(std::bind(&TcpServer::removeConnection, this, _1));
   conn->setWriteCompleteCallback(writeCompleteCallback_); 
-  conn->connectEstablished();
+  subLoop->runInLoop(std::bind(&TcpConnection::connectEstablished, conn));
 }
+
 void TcpServer::start() {
   if(!started_) {
     started_ = true;
@@ -49,6 +53,7 @@ void TcpServer::start() {
   if (!acceptor_->listening()) {
     loop_->runInLoop(std::bind(&Acceptor::listen, this->acceptor_.get()));
   }
+  subLoops_->start();
 }
 
 TcpServer::~TcpServer() {
@@ -62,5 +67,10 @@ void TcpServer::removeConnection(const TcpConnectionPtr &conn) {
   size_t n = connections_.erase(conn->name());
   assert(n == 1);
   loop_->queueInLoop(std::bind(&TcpConnection::connectDestroyed, conn)); 
+}
+
+void TcpServer::setThreadNum(int numThreads) {
+  loop_->assertInLoopThread();
+  subLoops_->setThreadNum(numThreads);
 }
 }

@@ -13,6 +13,7 @@ set(net_SRCS
   wf_tcp_server.cc
   wf_tcp_connection.cc
   wf_buffer.cc
+  wf_sub_loops.cc
 )
 
 add_library(winterfell_net ${net_SRCS})

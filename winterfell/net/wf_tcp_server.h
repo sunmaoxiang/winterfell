@@ -18,6 +18,7 @@ namespace winterfell
   class Endpoint;
   class EventLoop;
   class Acceptor;
+  class SubLoops;
 
   class TcpServer : Noncopyable
   {
@@ -42,6 +43,11 @@ namespace winterfell
     void setMessageCallback(const MessageCallback &cb) { messageCallback_ = cb; }
     void setWriteCompleteCallback(const WriteCompleteCallback &cb) { writeCompleteCallback_ = cb; }
 
+    /**
+     * @brief 设置subLoop中线程个数
+     */
+    void setThreadNum(int numThreads);
+
   private:
     void newConnectionCallback(Socket sock, const Endpoint &peerEndpoint);
     void removeConnection(const TcpConnectionPtr &conn);
@@ -59,5 +65,7 @@ namespace winterfell
 
     typedef std::map<std::string, TcpConnectionPtr> ConnectionMap; // 保存目前存活的TcpConnection的shared_ptr;
     ConnectionMap connections_;
+
+    std::unique_ptr<SubLoops> subLoops_;
   };
 }

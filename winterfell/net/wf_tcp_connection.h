@@ -52,6 +52,7 @@ private:
 
   void sendInLoop(const std::string& message);
   void shutdownInLoop();
+  void enableReadInLoop();
 
   EventLoop* loop_;
   std::string name_;

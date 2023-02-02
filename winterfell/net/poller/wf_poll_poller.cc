@@ -27,7 +27,7 @@ Timestamp PollPoller::poll(int timeoutMs, ChannelList* activeChannels) {
     LOG_TRACE << numEvents << " events happended";
     fillActiveChannels(numEvents, activeChannels);
   } else if (numEvents == 0) {
-    LOG_TRACE << " nothing happended";
+    // LOG_TRACE << " nothing happended";
   } else {
     LOG_ERROR << "PollPoller::poll" ;
   }

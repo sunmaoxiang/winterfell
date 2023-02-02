@@ -24,3 +24,5 @@ target_link_libraries(wf_event_loop_test3 winterfell_net winterfell_base winterf
 add_executable(wf_buffer_test wf_buffer_test.cc)
 target_link_libraries(wf_buffer_test winterfell_net winterfell_base winterfell_util gtest)
 
+add_executable(wf_sub_loops_test wf_sub_loops_test.cc)
+target_link_libraries(wf_sub_loops_test winterfell_net winterfell_base winterfell_util)

@@ -27,7 +27,10 @@ TcpConnection::TcpConnection(EventLoop* loop, std::string connName, Socket&& soc
     channel_->setCloseCallback(std::bind(&TcpConnection::handleClose, this));
     channel_->setErrorCallback(std::bind(&TcpConnection::handleError, this));
     channel_->setWriteCallback(std::bind(&TcpConnection::handleWrite, this));
-    channel_->enableReading();
+    loop_->runInLoop(std::bind(&TcpConnection::enableReadInLoop, this));
+}
+void TcpConnection::enableReadInLoop() {
+  channel_->enableReading();
 }
 TcpConnection::~TcpConnection() {
   assert(!connected());
