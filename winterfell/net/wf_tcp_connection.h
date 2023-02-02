@@ -23,6 +23,7 @@ public:
   void setConnectionCallback(ConnectionCallback& cb) { connectionCallback_ = cb; }
   void setMessageCallback(MessageCallback& cb) { messageCallback_ = cb; }
   void setCloseCallback(const CloseCallback &cb) { closeCallback_ = cb; }
+  void setWriteCompleteCallback(const WriteCompleteCallback &cb) { writeCompleteCallback_ = cb; }
 
   void connectEstablished();
   void connectDestroyed();
@@ -62,6 +63,7 @@ private:
   ConnectionCallback connectionCallback_;  
   MessageCallback messageCallback_;
   CloseCallback closeCallback_;
+  WriteCompleteCallback writeCompleteCallback_;
 
   Buffer inputBuffer_; // 用于非阻塞read
   Buffer outputBuffer_; // 用于非阻塞write

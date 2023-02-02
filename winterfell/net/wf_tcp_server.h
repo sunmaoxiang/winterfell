@@ -12,52 +12,52 @@
 #include <map>
 #include <string>
 
-namespace winterfell {
+namespace winterfell
+{
 
-class Endpoint;
-class EventLoop;
-class Acceptor;
+  class Endpoint;
+  class EventLoop;
+  class Acceptor;
 
-class TcpServer : Noncopyable {
+  class TcpServer : Noncopyable
+  {
 
-public:
-TcpServer(EventLoop* loop, const Endpoint& listenEndpoint, std::string name = "tcp_server");
-~TcpServer();
+  public:
+    TcpServer(EventLoop *loop, const Endpoint &listenEndpoint, std::string name = "tcp_server");
+    ~TcpServer();
 
-/**
- * @brief 启动一个Tcp服务器
-*/
-void start();
+    /**
+     * @brief 启动一个Tcp服务器
+     */
+    void start();
 
-/**
- * @brief 设置TcpServer创建一个新连接会调用的回调函数
-*/
-void setConnectionCallback(const ConnectionCallback& cb) { connectionCallback_ = cb; }
+    /**
+     * @brief 设置TcpServer创建一个新连接会调用的回调函数
+     */
+    void setConnectionCallback(const ConnectionCallback &cb) { connectionCallback_ = cb; }
 
-/**
- * @brief 设置TcpServer收到一个消息会调用的回调函数
-*/
-void setMessageCallback(const MessageCallback& cb) { messageCallback_ = cb; }
+    /**
+     * @brief 设置TcpServer收到一个消息会调用的回调函数
+     */
+    void setMessageCallback(const MessageCallback &cb) { messageCallback_ = cb; }
+    void setWriteCompleteCallback(const WriteCompleteCallback &cb) { writeCompleteCallback_ = cb; }
 
+  private:
+    void newConnectionCallback(Socket sock, const Endpoint &peerEndpoint);
+    void removeConnection(const TcpConnectionPtr &conn);
 
+    const std::string name_;
+    EventLoop *loop_;
+    std::unique_ptr<Acceptor> acceptor_;
 
+    ConnectionCallback connectionCallback_;
+    MessageCallback messageCallback_;
+    WriteCompleteCallback writeCompleteCallback_;
 
-private:
+    bool started_;
+    int nextConnId_; // 递增用于标识唯一的Connection
 
-void newConnectionCallback(Socket sock, const Endpoint& peerEndpoint);
-void removeConnection(const TcpConnectionPtr& conn);
-
-const std::string name_;
-EventLoop* loop_;
-std::unique_ptr<Acceptor> acceptor_;
-
-ConnectionCallback connectionCallback_;
-MessageCallback messageCallback_;
-
-bool started_;
-int nextConnId_; // 递增用于标识唯一的Connection
-
-typedef std::map<std::string, TcpConnectionPtr> ConnectionMap; // 保存目前存活的TcpConnection的shared_ptr;
-ConnectionMap connections_;
-};
+    typedef std::map<std::string, TcpConnectionPtr> ConnectionMap; // 保存目前存活的TcpConnection的shared_ptr;
+    ConnectionMap connections_;
+  };
 }

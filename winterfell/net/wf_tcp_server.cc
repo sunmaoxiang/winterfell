@@ -39,6 +39,7 @@ void TcpServer::newConnectionCallback(Socket sock, const Endpoint& peerEndpoint)
   conn->setConnectionCallback(connectionCallback_);
   conn->setMessageCallback(messageCallback_);
   conn->setCloseCallback(std::bind(&TcpServer::removeConnection, this, _1));
+  conn->setWriteCompleteCallback(writeCompleteCallback_); 
   conn->connectEstablished();
 }
 void TcpServer::start() {

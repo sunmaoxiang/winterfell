@@ -31,6 +31,9 @@ void onMessage(const TcpConnectionPtr& conn, Buffer &buf) {
     conn->send("Hello word!!!");
   }
 }
+void onWriteComplete(const TcpConnectionPtr& conn) {
+  LOG_INFO << "msg write complete";
+}
 
 int main() {
   LOG_INFO << "main(): pid = " << ::getpid();
@@ -40,7 +43,7 @@ int main() {
   TcpServer server(&loop, listenEndpoint);
   server.setConnectionCallback(onConnection);
   server.setMessageCallback(onMessage);
-
+  server.setWriteCompleteCallback(onWriteComplete);
   server.start();
   loop.loop();
   return 0;

@@ -66,6 +66,9 @@ void TcpConnection::handleWrite() {
       outputBuffer_.retrieve(n);
       if (outputBuffer_.readableBytes() == 0) {
         channel_->disableWriting();
+        if (writeCompleteCallback_) {
+          loop_->queueInLoop(std::bind(writeCompleteCallback_, shared_from_this()));
+        }
         if (state_ == kDisconnecting) {
           shutdownInLoop();
         }
@@ -127,6 +130,8 @@ void TcpConnection::sendInLoop(const std::string &message) {
         if(!channel_->isWriting()) {
           channel_->enableReading();
         }
+      } else if (writeCompleteCallback_){
+        loop_->queueInLoop(std::bind(writeCompleteCallback_, shared_from_this()));
       }
     } else {
       nwrote = 0;

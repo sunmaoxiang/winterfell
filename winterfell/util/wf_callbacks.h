@@ -46,6 +46,11 @@ typedef std::function<void (const TcpConnectionPtr& conn, Buffer& buf)> MessageC
 typedef std::function<void (const TcpConnectionPtr& conn)> CloseCallback;
 
 /**
+ * @brief 用于output缓冲区为空时，即写完毕后执行
+*/
+typedef std::function<void(const TcpConnectionPtr& conn)> WriteCompleteCallback;
+
+/**
  * @brief 用于EventLoop::runInLoop
 */
 typedef std::function<void()> Functor;
