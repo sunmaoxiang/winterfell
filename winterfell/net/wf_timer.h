@@ -16,7 +16,7 @@ class Timer {
 public:
   typedef std::unique_ptr<Timer> Ptr;
 
-  Timer(Timestamp when, int64_t interval_, TimerCallback& tcb);
+  Timer(Timestamp when, double interval_, TimerCallback& tcb);
   ~Timer() = default;
   /**
    * @brief: 用于TimerQueue调用
@@ -29,7 +29,7 @@ public:
   */
   Timestamp when() const { return when_; }
   int repeated() const { return repeaded_; }
-  int64_t interval() const { return interval_; } 
+  double interval() const { return interval_; } 
 
   /**
    * @brief 更新when，用于重新计时tricker
@@ -39,7 +39,7 @@ public:
 private:  
   Timestamp when_;            // 当前计时器被唤醒的时间
   bool repeaded_;             // 是否是重复的，用于EventLoop::runEvery()
-  int64_t interval_;          // <= 0 不发生重复
+  double interval_;          // <= 0 不发生重复
   TimerCallback tcb_;         // 用于TimerQueue调用
 };
 

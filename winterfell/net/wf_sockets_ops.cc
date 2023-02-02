@@ -97,4 +97,28 @@ struct sockaddr_in sockets::getLocalAddr(int sockfd) {
   return localaddr;
 }
 
+int sockets::connect(int sockfd, const struct sockaddr_in *addr) {
+  return ::connect(sockfd, reinterpret_cast<const struct sockaddr *> (addr), static_cast<socklen_t>(sizeof(struct sockaddr_in)));
+}
+
+int sockets::getSocketError(int sockfd) {
+  int optval;
+  socklen_t optlen = static_cast<socklen_t>(sizeof optval);
+  if (::getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &optval, &optlen)) {
+    return errno;
+  } else {
+    return optval;
+  }
+}
+
+struct sockaddr_in sockets::getPeerAddr(int sockfd) {
+  struct sockaddr_in peeraddr;
+  memset(&peeraddr, 0,sizeof peeraddr);
+  socklen_t addrlen = sizeof(peeraddr);
+  if (::getpeername(sockfd, reinterpret_cast<struct sockaddr*>(&peeraddr), &addrlen) < 0)
+  {
+    LOG_ERROR << "sockets::getPeerAddr";
+  }
+  return peeraddr;
+}
 }

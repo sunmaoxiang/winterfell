@@ -30,11 +30,9 @@ void Channel::update() {
 }
 
 Channel::~Channel() {
-  assert(!eventHandling_);
 }
 
 void Channel::handleEvent() {
-  eventHandling_ = true;
   // POLLNVAL Invalid request: fd not open (output only).
   if (revents_ & POLLNVAL) {
     LOG_WARN << "Channel::handleEvent() POLLINVAL: fd not open";
@@ -62,7 +60,10 @@ void Channel::handleEvent() {
   if (revents_ & POLLOUT) {
     if (writeCallback_) writeCallback_();
   }
-  eventHandling_ = false;
+}
+
+void Channel::remove() {
+  loop_->removeChannel(this);
 }
 
 };

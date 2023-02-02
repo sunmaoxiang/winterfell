@@ -41,7 +41,7 @@ public:
   */
   void shutdown();
 
-
+  EventLoop* getLoop() const {return loop_;}
 private:
   enum StateE { kConnnecting, kConnected, kDisconnecting, kDisconnected, }; // 定义状态
   void setState(StateE s) { state_ = s; }

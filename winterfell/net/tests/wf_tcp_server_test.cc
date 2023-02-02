@@ -37,10 +37,11 @@ void onWriteComplete(const TcpConnectionPtr& conn) {
 
 int main() {
   LOG_INFO << "main(): pid = " << ::getpid();
-  Endpoint listenEndpoint("192.168.158.12", 9981);
+  Endpoint listenEndpoint("localhost", 9981);
   EventLoop loop;
 
   TcpServer server(&loop, listenEndpoint);
+  server.setThreadNum(3);
   server.setConnectionCallback(onConnection);
   server.setMessageCallback(onMessage);
   server.setWriteCompleteCallback(onWriteComplete);

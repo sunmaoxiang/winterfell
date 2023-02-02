@@ -54,6 +54,22 @@ void close(int fd);
  * @brief 获取绑定在某个sockfd上的地址
 */
 struct sockaddr_in getLocalAddr(int sockfd);
+
+/**
+ * @brief 用于客户端主动连接Tcp
+*/
+int connect(int sockfd, const struct sockaddr_in *addr);
+/**
+ * @brief 用于获取套接字上出现的错误
+*/
+int getSocketError(int sockfd);
+
+/**
+ * @brief 获取已连接套接字对面的地址
+*/
+struct sockaddr_in getPeerAddr(int sockfd);
 }
+
+
 
 }

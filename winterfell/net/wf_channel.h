@@ -77,9 +77,15 @@ public:
   void set_index(int indexArg) { index_ = indexArg; }  
   
   /**
-   * 返回channel 的 owner loop
+   * @return channel 的 owner loop
   */
   EventLoop* ownerLoop() { return loop_; }
+
+  /**
+   * @brief 用于从eventLoop中移除该channel
+  */
+  void remove();
+  
   private:
     void update(); // update() ->  Eventloop::updateChannel -> Poller::updateChannel
 

@@ -61,12 +61,15 @@ TcpServer::~TcpServer() {
 }
 
 void TcpServer::removeConnection(const TcpConnectionPtr &conn) {
-  loop_->assertInLoopThread();
-  LOG_INFO << "TcpServer::removeConnection [" << name_ 
-           << "] - connection " << conn->name();
+  removeConnectionInLoop(conn->getLoop(), conn);
+}
+
+void TcpServer::removeConnectionInLoop(EventLoop *subLoop, const TcpConnectionPtr &conn) {
+  LOG_INFO << "TcpServer::removeConnection [" << name_
+           << "] - connection " << conn->name() << " in subLoop " << subLoop;
   size_t n = connections_.erase(conn->name());
   assert(n == 1);
-  loop_->queueInLoop(std::bind(&TcpConnection::connectDestroyed, conn)); 
+  subLoop->runInLoop(std::bind(&TcpConnection::connectDestroyed, conn));
 }
 
 void TcpServer::setThreadNum(int numThreads) {

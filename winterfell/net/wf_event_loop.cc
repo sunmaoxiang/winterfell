@@ -85,11 +85,11 @@ void EventLoop::updateChannel(Channel* channel) {
 void EventLoop::runAt(Timestamp at, TimerCallback tcb) {
   timerQueue_->addTimer(new Timer(at, 0, tcb));
 }
-void EventLoop::runAfter(int64_t delta, TimerCallback tcb) {
+void EventLoop::runAfter(double delta, TimerCallback tcb) {
   auto at = addTime(Timestamp::now(), delta); 
   timerQueue_->addTimer(new Timer(at, 0, tcb ));
 }
-void EventLoop::runEvery(int64_t interval, TimerCallback tcb) {
+void EventLoop::runEvery(double interval, TimerCallback tcb) {
   auto at = addTime(Timestamp::now(), interval);
   timerQueue_->addTimer(new Timer(at, interval, tcb));
 }

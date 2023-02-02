@@ -14,7 +14,7 @@ using std::string;
 
 class Timestamp {
 
-friend inline Timestamp addTime(Timestamp timestamp, int64_t seconds);
+friend inline Timestamp addTime(Timestamp timestamp, double seconds);
 
 public:
   Timestamp()
@@ -69,14 +69,17 @@ public:
   bool operator==(const Timestamp &rhs) const {
     return this->microSecondsSinceEpoch() == rhs.microSecondsSinceEpoch();
   }
+  static int MicroSecondsPerSecond()  {
+    return kMicroSecondsPerSecond;
+  }
 
 private:
   int64_t microSecondsSinceEpoch_;
-  static const int kMicroSecondsPerSecond = 1000 * 1000; // 微秒转化成秒需要乘多少
+  static const int kMicroSecondsPerSecond = 1000000; // 微秒转化成秒需要乘多少
 };
-inline Timestamp addTime(Timestamp timestamp, int64_t seconds)
+inline Timestamp addTime(Timestamp timestamp, double seconds)
 {
-  int64_t delta = static_cast<int64_t>(seconds * Timestamp::kMicroSecondsPerSecond);
+  auto delta = static_cast<int64_t>(seconds * timestamp.kMicroSecondsPerSecond);
   return Timestamp(timestamp.microSecondsSinceEpoch() + delta);
 }
 };

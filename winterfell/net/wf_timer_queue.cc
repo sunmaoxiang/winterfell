@@ -51,7 +51,9 @@ void TimerQueue::addTimer(Timer* timer)
 void TimerQueue::addTimerInLoop(Timer *timer) {
   struct itimerspec howlong;
   memset(&howlong, 0, sizeof howlong);
-  howlong.it_value.tv_sec = timer->when().secondsSinceEpoch() - Timestamp::now().secondsSinceEpoch();
+  int64_t microseconds = timer->when().microSecondsSinceEpoch() - Timestamp::now().microSecondsSinceEpoch();
+  howlong.it_value.tv_sec = microseconds / Timestamp::MicroSecondsPerSecond();
+  howlong.it_value.tv_nsec = (microseconds % Timestamp::MicroSecondsPerSecond()) * 1000;
   timerfd_settime(timerfd_, 0, &howlong, NULL);
   timerHeap_.insert({timer->when(), timer});
 }

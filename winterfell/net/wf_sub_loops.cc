@@ -13,7 +13,7 @@ namespace winterfell {
 SubLoops::SubLoops(EventLoop *mainLoop)
 : mainLoop_(mainLoop),
   started_(false),
-  numThreads_(0),
+  numThreads_(1),
   next_(0) {
 }
 SubLoops::~SubLoops() = default;

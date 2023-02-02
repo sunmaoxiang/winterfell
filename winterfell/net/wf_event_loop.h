@@ -64,11 +64,11 @@ public:
   /**
    * @brief runAfter: 在 delta seconds 之后执行某个事件
   */
-  void runAfter(int64_t delta, TimerCallback tcb);
+  void runAfter(double delta, TimerCallback tcb);
   /**
    * @brief runEvery: 每到interval间隔事件后执行某个事件
   */
-  void runEvery(int64_t interval, TimerCallback tcb);
+  void runEvery(double interval, TimerCallback tcb);
 
   /**
    * @brief 在本线程内执行某个用户的任务回调，当是本线程调用时是同步执行（原因是单线程无锁），当是别的线程调用需要加入任务队列中，在唤醒poller后调用

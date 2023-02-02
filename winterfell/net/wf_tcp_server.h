@@ -51,6 +51,7 @@ namespace winterfell
   private:
     void newConnectionCallback(Socket sock, const Endpoint &peerEndpoint);
     void removeConnection(const TcpConnectionPtr &conn);
+    void removeConnectionInLoop(EventLoop* loop, const TcpConnectionPtr& conn);
 
     const std::string name_;
     EventLoop *loop_;

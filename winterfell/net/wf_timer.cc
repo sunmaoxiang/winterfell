@@ -8,9 +8,9 @@
 #include "winterfell/util/wf_callbacks.h"
 namespace winterfell {
 
-Timer::Timer(Timestamp whenArg, int64_t intervalArg, TimerCallback& tcb) 
+Timer::Timer(Timestamp whenArg, double intervalArg, TimerCallback& tcb) 
 : when_(whenArg),
-  repeaded_( intervalArg > 0 ),
+  repeaded_( intervalArg > 0.0 ),
   interval_(intervalArg),
   tcb_(tcb)
 {  
