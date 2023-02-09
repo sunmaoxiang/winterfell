@@ -1,0 +1,2 @@
+add_executable(echo_server server.cc)
+target_link_libraries(echo_server winterfell_util winterfell_net winterfell_base)

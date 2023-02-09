@@ -34,3 +34,4 @@ set(DCMAKE_VERBOSE_MAKEFILE ON) # 打印makefile 编译命令
 add_subdirectory(winterfell/base)
 add_subdirectory(winterfell/util)
 add_subdirectory(winterfell/net)
+add_subdirectory(example)
