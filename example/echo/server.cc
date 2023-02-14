@@ -32,7 +32,7 @@ int main() {
   TcpServer s(&loop, listenEndpoint);
   s.setConnectionCallback(onConnect);
   s.setMessageCallback(onMessage);
-  s.setThreadNum(4);
+  s.setThreadNum(1);
   s.start();
   loop.loop();
   return 0;

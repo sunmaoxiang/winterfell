@@ -90,7 +90,7 @@ private:
   ChannelList activeChannels_;
   std::unique_ptr<Poller> poller_; // 一个event_loop独占一个poller
   std::unique_ptr<TimerQueue> timerQueue_; // 一个event_loop独占一个定时器队列
-  const static int kPollTimeMs = 5 * 1000;
+  const static int kPollTimeMs = 10 * 1000;
 
   std::vector<Functor> pendingFunctors_;  // @GuardeBy mutex_
   MutexLock mutex_;
