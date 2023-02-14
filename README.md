@@ -11,13 +11,22 @@
 
 ## requirement
 
-Cmake 3.6.0
+Cmake >= 3.6.0
 
-gcc 4.8.5 (support std=c++11)
+gcc >= 4.8.5 (support std=c++11)
 
 [GoogleTest](https://github.com/google/googletest)
 
-libprotoc 2.5.0
+libprotoc >= 3.0
+
+## support feature
+
+1. 实现非阻塞 + Reactor模型的高并发低延时的服务器框架。
+
+2. 支持定时器，onConnection，onMessage、onWriteComplete回调，使用Buffer减少阻塞在读写上的时间。
+
+3. 主从reactor，主reactor负责accept消息，建立TcpConnection，并使用Round-robin分配给子reactor。
+
 
 ## FlameGraph
 
