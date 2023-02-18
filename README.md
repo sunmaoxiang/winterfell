@@ -23,9 +23,18 @@ libprotoc >= 3.0
 
 1. 实现非阻塞 + Reactor模型的高并发低延时的服务器框架。
 
-2. 支持定时器，onConnection，onMessage、onWriteComplete回调，使用Buffer减少阻塞在读写上的时间。
+2. 支持定时器，onConnection，onMessage、onWriteComplete回调，使用Buffer配合非阻塞IO。
 
 3. 主从reactor，主reactor负责accept消息，建立TcpConnection，并使用Round-robin分配给子reactor。
+
+4. 使用timing wheel踢掉空闲链接。(TODO)
+
+5. 模仿[time/rate](https://github.com/golang/time/blob/master/rate/rate.go) 实现的令牌桶限流器 (TODO)。
+
+6. http (TODO)
+
+7. 整合Protobuf实现 RPC(TODO)
+
 
 
 ## FlameGraph

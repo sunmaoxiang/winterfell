@@ -42,7 +42,7 @@ public:
   /**
    * @brief 判断时间戳是否可用
   */
-  bool valid() const { return microSecondsSinceEpoch_ > 0; }
+  bool valid() const { return microSecondsSinceEpoch_ >= 0; }
 
   int64_t microSecondsSinceEpoch() const { return microSecondsSinceEpoch_; }
   time_t secondsSinceEpoch() const{
@@ -72,6 +72,7 @@ public:
   static int MicroSecondsPerSecond()  {
     return kMicroSecondsPerSecond;
   }
+  Timestamp sub(Timestamp t) { return Timestamp(microSecondsSinceEpoch_ - t.microSecondsSinceEpoch()); }
 
 private:
   int64_t microSecondsSinceEpoch_;
