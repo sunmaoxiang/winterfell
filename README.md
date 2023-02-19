@@ -27,9 +27,9 @@ libprotoc >= 3.0
 
 3. 主从reactor，主reactor负责accept消息，建立TcpConnection，并使用Round-robin分配给子reactor。
 
-4. 使用timing wheel踢掉空闲链接。(TODO)
+4. 模仿[time/rate](https://github.com/golang/time/blob/master/rate/rate.go) 实现的令牌桶限流器，测试及用法见[example/echo_rate](/example/echo_rate/)。
 
-5. 模仿[time/rate](https://github.com/golang/time/blob/master/rate/rate.go) 实现的令牌桶限流器 (TODO)。
+5. 使用timing wheel踢掉空闲链接。(TODO)
 
 6. http (TODO)
 
