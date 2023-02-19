@@ -1,0 +1,5 @@
+add_executable(echo_rate_server server.cc)
+target_link_libraries(echo_rate_server winterfell_util winterfell_net winterfell_base)
+
+add_executable(echo_rate_client client.cc)
+target_link_libraries(echo_rate_client winterfell_util winterfell_net winterfell_base)
