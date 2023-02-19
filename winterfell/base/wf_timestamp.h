@@ -48,6 +48,9 @@ public:
   time_t secondsSinceEpoch() const{
     return static_cast<time_t>(microSecondsSinceEpoch_ / kMicroSecondsPerSecond);
   }
+  double secondsSinceEpochDouble() const {
+    return static_cast<double>(microSecondsSinceEpoch_) / kMicroSecondsPerSecond;
+  }
   bool invalid() { return microSecondsSinceEpoch_ < 0; }
 
   /**
