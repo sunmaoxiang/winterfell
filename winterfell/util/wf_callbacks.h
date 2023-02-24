@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "winterfell/base/wf_timestamp.h"
+
 #include <functional>
 #include <memory>
 namespace winterfell {
@@ -38,7 +40,7 @@ typedef std::function<void (const TcpConnectionPtr& conn)> ConnectionCallback;
 /**
  * @brief 用于有新msg到来后进行回调
 */
-typedef std::function<void (const TcpConnectionPtr& conn, Buffer& buf)> MessageCallback; 
+typedef std::function<void (const TcpConnectionPtr& conn, Buffer& buf, Timestamp timestamp)> MessageCallback; 
 
 /**
  * @brief 用于client断开连接后进行回调

@@ -25,7 +25,7 @@ void onConnect(const TcpConnectionPtr &conn) {
   }
 }
 
-void onMessage(const TcpConnectionPtr& conn, Buffer& buf) {
+void onMessage(const TcpConnectionPtr& conn, Buffer& buf, Timestamp timestamp) {
   auto reserv = g_limiter->reserve();
   if (!reserv.OK()) {
     return ;

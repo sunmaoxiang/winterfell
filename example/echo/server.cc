@@ -19,9 +19,10 @@ void onConnect(const TcpConnectionPtr &conn) {
   }
 }
 
-void onMessage(const TcpConnectionPtr& conn, Buffer& buf) {
+void onMessage(const TcpConnectionPtr& conn, Buffer& buf, Timestamp timestamp) {
   assert(conn->connected());
   string msg = buf.retrieveAsString();
+  LOG_INFO << "receive at " << timestamp.toString();
   conn->send(msg);
 }
 

@@ -14,7 +14,7 @@ class EventLoop;
 
 class Channel : Noncopyable {
 public:
-
+  typedef std::function<void(Timestamp)> ReadEventCallback;
   /**
    * @brief: 构造函数
    * @param {EventLoop*} loop channel需要注册进的事件循环
@@ -26,12 +26,12 @@ public:
   /**
    * @brief handleEvent()是Channel的核心，它由EventLoop::loop()调用，根据revents_值分别调用不同的回调函数
   */
-  void handleEvent();
+  void handleEvent(Timestamp receiveTime);
 
   /**
    * @brief 三种事件回调函数的setter, 当fd上出现可读，可写，出错，调用相关函数
   */
-  void setReadCallback(const EventCallback& cb) { readCallback_ = cb; }
+  void setReadCallback(const ReadEventCallback& cb) { readCallback_ = cb; }
   void setWriteCallback(const EventCallback& cb) { writeCallback_ = cb; }
   void setErrorCallback(const EventCallback& cb) { errorCallback_ = cb; }
   void setCloseCallback(const EventCallback& cb) { closeCallback_ = cb; }
@@ -95,7 +95,8 @@ public:
 
     EventLoop* loop_; // channel所在的eventloop
     
-    EventCallback readCallback_;
+
+    ReadEventCallback readCallback_;
     EventCallback writeCallback_;
     EventCallback errorCallback_;
     EventCallback closeCallback_;

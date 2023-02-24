@@ -45,7 +45,7 @@ public:
 private:
   enum StateE { kConnnecting, kConnected, kDisconnecting, kDisconnected, }; // 定义状态
   void setState(StateE s) { state_ = s; }
-  void handleRead(); // 当有消息到来时调用
+  void handleRead(Timestamp receiveTime); // 当有消息到来时调用
   void handleWrite();
   void handleClose();
   void handleError();

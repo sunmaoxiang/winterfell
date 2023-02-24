@@ -7,14 +7,15 @@
 #include "winterfell/base/wf_log.h"
 #include "winterfell/net/wf_event_loop.h"
 #include "winterfell/net/wf_channel.h"
+#include "winterfell/base/wf_timestamp.h"
 
 #include <sys/timerfd.h>
 #include <cstring>
 #include <unistd.h>
 winterfell::EventLoop* g_loop;
 
-void timeout() {
-  LOG_INFO << "TimeOut!" ;
+void timeout(winterfell::Timestamp t) {
+  LOG_INFO << "TimeOut" << " at " << t.toString();
   g_loop->quit();
 }
 

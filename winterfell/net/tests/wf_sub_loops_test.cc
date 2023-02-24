@@ -23,9 +23,9 @@ void onConnection(const TcpConnectionPtr& conn) {
     LOG_INFO << "onConnection: connection [ " << conn->name() << "] is down" ;
   }
 }
-void onMessage(const TcpConnectionPtr& conn, Buffer &buf) {
+void onMessage(const TcpConnectionPtr& conn, Buffer &buf, Timestamp receiveTime) {
   auto msg = buf.retrieveAsString();
-  cout << "recv msg: " << msg << endl;
+  cout << "recv msg: [" << msg << "] at " << receiveTime.toString() <<  endl;
   cout << "recv size: " << msg.size() << endl;
   if (msg == "\n") {
     conn->shutdown();

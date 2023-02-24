@@ -32,7 +32,7 @@ void Channel::update() {
 Channel::~Channel() {
 }
 
-void Channel::handleEvent() {
+void Channel::handleEvent(Timestamp receiveTime) {
   // POLLNVAL Invalid request: fd not open (output only).
   if (revents_ & POLLNVAL) {
     LOG_WARN << "Channel::handleEvent() POLLINVAL: fd not open";
@@ -54,7 +54,7 @@ void Channel::handleEvent() {
    * POLLHUP: socket的另一端关闭时,或读到文件结尾
    */
   if (revents_ & (POLLIN | POLLPRI | POLLRDHUP)) {
-    if(readCallback_) readCallback_();
+    if(readCallback_) readCallback_(receiveTime);
   }
   // POLLOUT: Writing now will not block.
   if (revents_ & POLLOUT) {

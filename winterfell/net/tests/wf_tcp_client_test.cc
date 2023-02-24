@@ -6,16 +6,16 @@
 #include "winterfell/base/wf_log.h"
 #include "winterfell/net/wf_event_loop.h"
 #include "winterfell/net/wf_tcp_client.h"
-
+#include "winterfell/base/wf_timestamp.h"
 using namespace winterfell;
 void onConnection(const TcpConnectionPtr& conn) {
   LOG_INFO << "new Connection:" << conn->peerEndpoint().getIpPort();
   conn->send("smx");
 }
-void onMessage(const TcpConnectionPtr &conn, Buffer &buf)
+void onMessage(const TcpConnectionPtr &conn, Buffer &buf, Timestamp timestamp)
 {
   auto msg = buf.retrieveAsString();
-  LOG_INFO << msg ;
+  LOG_INFO << "receive " <<  msg << " at " << timestamp.toString();
 }
 void onWriteComplete(const TcpConnectionPtr &conn) {
   LOG_INFO << "writeComplete";

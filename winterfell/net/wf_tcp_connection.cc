@@ -23,7 +23,7 @@ TcpConnection::TcpConnection(EventLoop* loop, std::string connName, Socket&& soc
   channel_(std::unique_ptr<Channel>(new Channel(loop, socket_->fd()))),
   localEndpoint_(localEndpoint),
   peerEndpoint_(peerEndpointArg) {
-    channel_->setReadCallback(std::bind(&TcpConnection::handleRead, this));
+    channel_->setReadCallback(std::bind(&TcpConnection::handleRead, this, _1));
     channel_->setCloseCallback(std::bind(&TcpConnection::handleClose, this));
     channel_->setErrorCallback(std::bind(&TcpConnection::handleError, this));
     channel_->setWriteCallback(std::bind(&TcpConnection::handleWrite, this));
@@ -35,11 +35,11 @@ void TcpConnection::enableReadInLoop() {
 TcpConnection::~TcpConnection() {
   assert(!connected());
 }
-void TcpConnection::handleRead() {
+void TcpConnection::handleRead(Timestamp receiveTime) {
   int savedErrno;
   auto bufsize = inputBuffer_.readFd(channel_->fd(), &savedErrno);
   if (bufsize > 0) {
-    messageCallback_(shared_from_this(), inputBuffer_);
+    messageCallback_(shared_from_this(), inputBuffer_, receiveTime);
   } else if (bufsize == 0) {
     handleClose();
   } else {
