@@ -126,12 +126,13 @@ void TcpConnection::sendInLoop(const std::string &message) {
   ssize_t nwrote = 0;
   if (!channel_->isWriting() && outputBuffer_.readableBytes() == 0) {
     nwrote = ::write(channel_->fd(), message.data(), message.size());
+    LOG_TRACE << "已经写入 " << nwrote << " Bytes数据";
     if (nwrote >= 0) {
       if (static_cast<size_t>(nwrote) < message.size()) {
         LOG_TRACE << "I am going to write more data";
         outputBuffer_.append(message.data() + nwrote, message.size() - nwrote);
         if(!channel_->isWriting()) {
-          channel_->enableReading();
+          channel_->enableWriting();
         }
       } else if (writeCompleteCallback_){
         loop_->queueInLoop(std::bind(writeCompleteCallback_, shared_from_this()));

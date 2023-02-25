@@ -106,7 +106,7 @@ public:
     int revents_;  // 目前活动的事件，由poller设置
     int index_;    
 
-    bool eventHandling_;
+    // bool eventHandling_;
 };
 
 };

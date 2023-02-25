@@ -66,7 +66,7 @@ void PollPoller::updateChannel(Channel* channel) {
   } else {
     assert(channels_.find(channel->fd()) != channels_.end());
     assert(channels_[channel->fd()] == channel);
-    int idx = channel->index();
+    auto idx = channel->index();
     assert(0 <= idx && idx < static_cast<int>( pollfds_.size() ));
     struct pollfd& pfd = pollfds_[idx];
     assert(pfd.fd == channel->fd() || pfd.fd == -1);

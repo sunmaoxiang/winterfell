@@ -113,7 +113,7 @@ public:
    * @param {LoggerEventPtr} loggerEventPtr
    * @return {*}
    */
-  LoggerWrapper(Logger* logger, std::shared_ptr<LoggerEvent> loggerEvent);
+  LoggerWrapper(std::shared_ptr<LoggerEvent> loggerEvent);
 
   /**
    * @brief: 析构函数，主要用于打印日志
@@ -129,14 +129,14 @@ public:
   }
 
 private:
-  Logger *logger_;
+  // Logger *logger_;
   std::shared_ptr<LoggerEvent> loggerEvent_;
 };
 
 };
 
 #define LOG_LEVEL(level)  if (winterfell::g_logger.GetInstance()->getLogLevel() <= level)  \
-              winterfell::LoggerWrapper(winterfell::g_logger.GetInstance(), std::shared_ptr<winterfell::LoggerEvent>(new winterfell::LoggerEvent(level, time(0), winterfell::GetThreadId(), __FILE__, __LINE__))).SS()
+              winterfell::LoggerWrapper(std::shared_ptr<winterfell::LoggerEvent>(new winterfell::LoggerEvent(level, time(0), static_cast<uint32_t>(winterfell::GetThreadId()), __FILE__, __LINE__))).SS()
   
 
 /**

@@ -47,8 +47,8 @@ LoggerEvent::LoggerEvent(Logger::LoggerLevel level, time_t t, uint32_t thread_id
   logfmt_ = ss.str();
 }
 
-LoggerWrapper::LoggerWrapper(Logger *logger, std::shared_ptr<LoggerEvent> loggerEvent) 
-: logger_(logger), loggerEvent_(loggerEvent) {
+LoggerWrapper::LoggerWrapper(std::shared_ptr<LoggerEvent> loggerEvent) 
+: loggerEvent_(loggerEvent) {
 }
 
 LoggerWrapper::~LoggerWrapper() {

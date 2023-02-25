@@ -11,6 +11,8 @@
 #include <string>
 #include <errno.h>
 #include <sys/uio.h>
+#include <algorithm>
+#include <cassert>
 namespace winterfell {
 using std::string;
 class Buffer {
@@ -24,10 +26,20 @@ public:
   ssize_t readableBytes() const;
   ssize_t writableBytes() const;
   ssize_t prependableBytes() const ;
+  char* peek();
   const char* peek() const;
+  const char* findCRLF() {
+    const char* crlf = std::search(peek(), beginWrite(), kCRLF, kCRLF+2);
+    return crlf == beginWrite() ? NULL : crlf;
+  }
   void retrieve(ssize_t n);
   void retrieveAll() {
      readerIndex_ = kCheapPrepend; writerIndex_ = kCheapPrepend; 
+  }
+  void retrieveUntil(const char* end) {
+    assert(peek() <= end);
+    assert(end <= beginWrite());
+    retrieve(end - peek());
   }
   string retrieveAsString();
   string retrieveAsString(ssize_t n);
@@ -52,6 +64,8 @@ private:
   std::vector<char> buffer_;
   ssize_t readerIndex_;
   ssize_t writerIndex_;
+
+  static const char kCRLF[];
 };
 
 

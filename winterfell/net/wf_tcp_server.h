@@ -48,6 +48,9 @@ namespace winterfell
      */
     void setThreadNum(int numThreads);
 
+    string ipPort() const { return ipPort_; }
+    string name() const {return name_;}
+
   private:
     void newConnectionCallback(Socket sock, const Endpoint &peerEndpoint);
     void removeConnection(const TcpConnectionPtr &conn);
@@ -68,5 +71,7 @@ namespace winterfell
     ConnectionMap connections_;
 
     std::unique_ptr<SubLoops> subLoops_;
+
+    string ipPort_;
   };
 }

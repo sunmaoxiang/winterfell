@@ -13,6 +13,8 @@
 #include <memory>
 #include <string>
 
+#include "winterfell/net/http/wf_http_context.h"
+
 namespace winterfell {
 class EventLoop;
 class Socket;
@@ -42,6 +44,9 @@ public:
   void shutdown();
 
   EventLoop* getLoop() const {return loop_;}
+  HttpContext* httpContext() { return context_.get(); }
+  void setHttpContext(HttpContext* c) { context_.reset(c); }
+
 private:
   enum StateE { kConnnecting, kConnected, kDisconnecting, kDisconnected, }; // 定义状态
   void setState(StateE s) { state_ = s; }
@@ -68,5 +73,7 @@ private:
 
   Buffer inputBuffer_; // 用于非阻塞read
   Buffer outputBuffer_; // 用于非阻塞write
+
+  std::unique_ptr<HttpContext> context_; // 用于保存当前http上下文
 };
 }

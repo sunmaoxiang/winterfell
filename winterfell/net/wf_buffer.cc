@@ -9,6 +9,7 @@
 
 namespace winterfell {
 
+const char Buffer::kCRLF[] = "\r\n";
 const ssize_t Buffer::kCheapPrepend;
 const ssize_t Buffer::kInitialSize;
 
@@ -40,6 +41,9 @@ ssize_t Buffer::writableBytes() const {
 }
 ssize_t Buffer::prependableBytes() const {
   return readerIndex_;
+}
+char* Buffer::peek() {
+  return begin() + readerIndex_;
 }
 const char* Buffer::peek() const {
   return begin() + readerIndex_;

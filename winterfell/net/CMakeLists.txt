@@ -27,3 +27,4 @@ file(GLOB HEADERS "*.h")
 install(FILES ${HEADERS} DESTINATION include/winterfell/net)
 
 add_subdirectory(tests)
+add_subdirectory(http)

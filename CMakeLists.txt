@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.6)
 
-
 project(winterfell C CXX)
+
+
+# set(CMAKE_CXX_COMPILER clang++)
 
 add_compile_options(
  -g
@@ -21,7 +23,7 @@ add_compile_options(
  -Wwrite-strings
  -march=native
  # -MMD
- -rdynamic
+ #-rdynamic
 )
 
 

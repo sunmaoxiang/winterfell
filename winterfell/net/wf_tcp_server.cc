@@ -21,7 +21,8 @@ TcpServer::TcpServer(EventLoop* loop, const Endpoint& listenEndpoint, std::strin
 loop_(loop),
 acceptor_( std::unique_ptr<Acceptor>(new Acceptor(loop,listenEndpoint))),
 nextConnId_(1),
-subLoops_(std::unique_ptr<SubLoops>(new SubLoops(loop))) {  
+subLoops_(std::unique_ptr<SubLoops>(new SubLoops(loop))),
+ipPort_(listenEndpoint.getIpPort()) {  
   acceptor_->setNewConnectionCallback(std::bind(&TcpServer::newConnectionCallback, this, _1, _2) );
 }
 
