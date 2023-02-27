@@ -31,11 +31,20 @@ libprotoc >= 3.0
 
 5. 实现http服务器
 
-6. 使用timing wheel踢掉空闲链接。(TODO)
+6. 整合Protobuf实现 RPC，并提供同步和Future特性(TODO)
 
-7. 整合Protobuf实现 RPC(TODO)
+7. 使用timing wheel踢掉空闲链接。(TODO)
 
 
+## 编译及运行
+
+1. mkdir build
+
+2. cd build && cmake ..
+
+./bin/** 下为tests和example编译后的可执行文件
+
+例如执行httpserver_test，在127.0.0.1:8000下可以看到当前系统时间戳，在127.0.0.1:8000/image下可以看到狗头图片
 
 ## FlameGraph
 
