@@ -1,0 +1,5 @@
+add_executable(ftp_server ftp_server.cc)
+target_link_libraries(ftp_server  winterfell_util winterfell_net winterfell_base winterfell_http) 
+
+add_executable(ftp_client ftp_client.cc)
+target_link_libraries(ftp_client winterfell_util winterfell_net winterfell_base winterfell_http)

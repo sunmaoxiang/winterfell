@@ -29,7 +29,7 @@ libprotoc >= 3.0
 
 4. 模仿[time/rate](https://github.com/golang/time/blob/master/rate/rate.go) 实现的令牌桶限流器，测试及用法见[example/echo_rate](/example/echo_rate/)。
 
-5. 实现http服务器
+5. 实现http服务器，简易ftp服务器支持断点续传
 
 6. 整合Protobuf实现 RPC，并提供同步和Future特性(TODO)
 

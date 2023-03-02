@@ -23,7 +23,7 @@ void onRequest(const HttpRequest& req, HttpResponse* resp) {
   }
   if (req.path() == "/")
   {
-    resp->setStatusCode(HttpResponse::k2000k);
+    resp->setStatusCode(HttpResponse::k200ok);
     resp->setStatusMessage("OK");
     resp->setContentType("text/html");
     resp->addHeader("Server", "Winterfell");
@@ -34,7 +34,7 @@ void onRequest(const HttpRequest& req, HttpResponse* resp) {
                   "</body></html>");
   }
   else if(req.path() == "/image") {
-    resp->setStatusCode(HttpResponse::k2000k);
+    resp->setStatusCode(HttpResponse::k200ok);
     resp->setStatusMessage("OK");
     resp->setContentType("image/png");
     std::ifstream is("image/dog.png", std::ifstream::in | std::ios::binary);
@@ -43,7 +43,7 @@ void onRequest(const HttpRequest& req, HttpResponse* resp) {
     is.close();
     resp->setBody(ss.str());
   }else if(req.path() == "/video") {
-    resp->setStatusCode(HttpResponse::k2000k);
+    resp->setStatusCode(HttpResponse::k200ok);
     resp->setStatusMessage("OK");
     resp->setContentType("video/mp4");
     std::ifstream is("video/cat.mp4", std::ifstream::in | std::ios::binary);
