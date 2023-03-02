@@ -42,7 +42,16 @@ void onRequest(const HttpRequest& req, HttpResponse* resp) {
     ss << is.rdbuf();
     is.close();
     resp->setBody(ss.str());
-    
+  }else if(req.path() == "/video") {
+    resp->setStatusCode(HttpResponse::k2000k);
+    resp->setStatusMessage("OK");
+    resp->setContentType("video/mp4");
+    std::ifstream is("video/cat.mp4", std::ifstream::in | std::ios::binary);
+    std::stringstream ss;
+    ss << is.rdbuf();
+    is.close();
+    resp->setBody(ss.str());
+  
   } else {
     resp->setStatusCode(HttpResponse::k404NotFound);
     resp->setStatusMessage("Not Found");

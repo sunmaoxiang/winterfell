@@ -33,6 +33,7 @@ public:
 
   const string& name() const { return name_; }
   const Endpoint& peerEndpoint() const { return peerEndpoint_;}
+  const Endpoint& localEndpoint() const { return localEndpoint_; }
   
   /**
    * @brief 用于发送数据
