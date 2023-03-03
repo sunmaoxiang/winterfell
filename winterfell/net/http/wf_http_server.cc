@@ -38,12 +38,12 @@ void HttpServer::start() {
 
 void HttpServer::onConnection(const TcpConnectionPtr& conn) {
   if (conn->connected()) {
-    conn->setHttpContext(new HttpContext());
+    conn->setContext(new HttpContext());
   }
 }
 
 void HttpServer::onMessage(const TcpConnectionPtr& conn, Buffer& buf, Timestamp receiveTime) {
-  HttpContext* context = conn->httpContext();
+  HttpContext* context = conn->Context().get_data<HttpContext*>();
   if (!context->parseRequest(&buf, receiveTime)) {
     conn->send("HTTP/1.1 400 Bad Request\r\n\r\n");
     conn->shutdown();

@@ -10,6 +10,7 @@
 #include "winterfell/net/wf_channel.h"
 #include "winterfell/util/wf_callbacks.h"
 #include "winterfell/net/wf_buffer.h"
+#include "winterfell/util/wf_any.h"
 #include <memory>
 #include <string>
 
@@ -45,8 +46,8 @@ public:
   void shutdown();
 
   EventLoop* getLoop() const {return loop_;}
-  HttpContext* httpContext() { return context_.get(); }
-  void setHttpContext(HttpContext* c) { context_.reset(c); }
+  Any& Context() { return context_; }
+  void setContext(const Any& c) { context_ = c; }
 
 private:
   enum StateE { kConnnecting, kConnected, kDisconnecting, kDisconnected, }; // 定义状态
@@ -74,7 +75,6 @@ private:
 
   Buffer inputBuffer_; // 用于非阻塞read
   Buffer outputBuffer_; // 用于非阻塞write
-
-  std::unique_ptr<HttpContext> context_; // 用于保存当前http上下文
+  Any context_;
 };
 }
