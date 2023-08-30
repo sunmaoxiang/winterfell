@@ -15,6 +15,7 @@ namespace winterfell {
 Socket::~Socket() {
   if (sockfd_ != nullptr) {
     ::close(fd());
+    delete sockfd_;
   }
 }
 
