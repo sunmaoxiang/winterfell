@@ -58,6 +58,9 @@ libprotoc >= 3.0
 
 ![perf-muduo](./perf-muduo.svg)
 
+### redis
+![perf-redis](./perf-redis.svg)
+
 ## 性能比较
 
 使用EchoServer进行测试，测试命令 ab -n 1000000 -c 100 -k http://127.0.0.1:8888/ 
